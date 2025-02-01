@@ -1,0 +1,28 @@
+from datetime import datetime
+import enum
+from src.database import Base
+from sqlalchemy import Integer, String, func
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import ARRAY
+from typing import List
+
+
+class GenderEnum(str, enum.Enum):
+    MALE = "мужчина"
+    FEMALE = "женщина"
+    OTHER = "other"
+
+
+# Причина почему так: https://habr.com/ru/companies/amvera/articles/849836/
+class User(Base):
+    __tablename__ = 'users'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    surname: Mapped[str | None]
+    email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    gender: Mapped[GenderEnum]
+    age: Mapped[int | None]
+    interests: Mapped[List[str] | None] = mapped_column(ARRAY(String))
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())

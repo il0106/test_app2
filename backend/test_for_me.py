@@ -28,7 +28,7 @@ try:
 
     
     q = """
-    SELECT * FROM alembic_version;
+    SELECT * FROM users;
     """
 
     print(pd.read_sql_query(q, connection))

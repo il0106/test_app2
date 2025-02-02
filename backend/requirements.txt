@@ -1,2 +1,8 @@
 fastapi
 uvicorn
+python-jose
+passlib
+sqlalchemy
+pydantic_settings
+pydantic
+alembic

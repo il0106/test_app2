@@ -6,3 +6,4 @@ sqlalchemy
 pydantic_settings
 pydantic
 alembic
+bcrypt

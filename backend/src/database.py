@@ -2,9 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncAttrs
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, declared_attr, Mapped, mapped_column
 
-# import sys, os
-# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from config import settings
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from src.config import settings
 
 postgres_sync_engine = create_engine(
     url=settings.POSTGRES_URL_psycopg,
@@ -18,8 +18,8 @@ postgres_async_engine = create_async_engine(
     echo=True,
 )
 
-session_factory = sessionmaker(postgres_sync_engine)
-async_session_factory = async_sessionmaker(postgres_async_engine, expire_on_commit=False)
+session_maker = sessionmaker(postgres_sync_engine)
+async_session_maker = async_sessionmaker(postgres_async_engine, expire_on_commit=False)
 
 # Базовый класс для всех моделей
 class Base(AsyncAttrs, DeclarativeBase):

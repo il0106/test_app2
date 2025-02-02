@@ -1,4 +1,5 @@
 import psycopg2
+import pandas as pd
 
 # Данные для подключения
 db_host = 'localhost'  # Или IP-адрес хоста Docker
@@ -26,15 +27,13 @@ try:
     print(f"Вы подключены к - {db_version}\n")
 
     
-    cursor.execute("""
+    q = """
     SELECT 
         *
-    FROM information_schema.tables
-    """)
-    rows = cursor.fetchall()
+    FROM users
+    """
 
-    for row in rows:
-        print(row)
+    print(pd.read_sql_query(q, connection))
 
     cursor.close()
     connection.close()

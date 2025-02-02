@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn 
+from src.users.router import router as router_users
 
 
 app = FastAPI()
+app.include_router(router_users)
 
 # Разрешаем CORS для фронтенда
 app.add_middleware(
@@ -20,6 +22,10 @@ app.add_middleware(
 @app.get("/sum")
 def read_sum(a: float, b: float):
     return {"sum": a + b}
+
+
+
+
 
 
 if __name__=="__main__":

@@ -1,4 +1,5 @@
-from src.database import async_session_maker, select
+from src.database import async_session_maker
+from sqlalchemy import select, insert
 
 class BaseDAO:
     model = None
@@ -22,4 +23,11 @@ class BaseDAO:
         async with async_session_maker() as session:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
-            return result.scalars().all()
+            return result.mapping().all()
+        
+    @classmethod
+    async def add(cls, **data):
+        async with async_session_maker() as session:
+            query = insert(cls.model).values(**data)
+            await session.execute(query)
+            await session.commit()

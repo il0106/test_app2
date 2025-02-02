@@ -14,13 +14,14 @@ class GenderEnum(str, enum.Enum):
 
 
 # Причина почему так: https://habr.com/ru/companies/amvera/articles/849836/
-class User(Base):
+class Users(Base):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     surname: Mapped[str | None]
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     gender: Mapped[GenderEnum]
     age: Mapped[int | None]
     interests: Mapped[List[str] | None] = mapped_column(ARRAY(String))

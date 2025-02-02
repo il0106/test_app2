@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASS: str
 
+    SECRET_KEY: str
+    ALGORITHM: str
+
     @property
     def POSTGRES_URL_asyncpg(self):
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASS}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"

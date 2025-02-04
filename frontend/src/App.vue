@@ -1,46 +1,30 @@
 <template>
-  <div id="app">
-    <h1>Сумма двух чисел</h1>
-    <input v-model.number="a" placeholder="Первое число" type="number" />
-    <input v-model.number="b" placeholder="Второе число" type="number" />
-    <button @click="calculateSum">Посчитать сумму</button>
-    <p v-if="sum !== null">Сумма: {{ sum }}</p>
-  </div>
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </nav>
+  <router-view/>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      a: null,
-      b: null,
-      sum: null,
-    };
-  },
-  methods: {
-    async calculateSum() {
-      if (this.a !== null && this.b !== null) {
-        try {
-          const response = await fetch(`/api/sum?a=${this.a}&b=${this.b}`);
-          const data = await response.json();
-          this.sum = data.sum;
-        } catch (error) {
-          console.error("Ошибка:", error);
-        }
-      } else {
-        alert("Введите оба числа.");
-      }
-    },
-  },
-};
-</script>
 
 <style>
 #app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  margin-top: 50px;
+  color: #2c3e50;
 }
-input {
-  margin: 5px;
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>

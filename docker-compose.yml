@@ -42,6 +42,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}      
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
       POSTGRES_DB: ${POSTGRES_DB} 
+      TZ: UTC
       # PGDATA: '/var/lib/postgresql/data'  # вручную указывается папка, где хранятся данные кластера, но с этим проблема, т.к. при удалении тома в котором эта папка, она останется - будет засорение
     # volumes:
     #   - ./database/postgres/data:/var/lib/postgresql/data    # просто свою папку с данными кинули в том (слева может быть просто название тома)
@@ -65,7 +66,6 @@ services:
         limits:
           cpus: '0.75'  # не более такого количества ядер
           memory: 5GB
-    uts: "host"
     networks:
       - dev
 

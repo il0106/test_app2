@@ -16,5 +16,14 @@ export default defineNuxtConfig({
         secure: false,
       },
     },
-  },
+    storage: {
+      'cache': {
+        driver: 'fs',
+        base: './.cache'
+      }
+    },
+    routeRules: {
+      '/**': { cache: { swr: true, maxAge: 120 } } // Кэшировать все страницы на 120 секунд
+    }
+  }
 });

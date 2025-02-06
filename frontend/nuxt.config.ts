@@ -23,7 +23,7 @@ export default defineNuxtConfig({
       }
     },
     routeRules: {
-      '/**': { cache: { swr: true, maxAge: 120 } } // Кэшировать все страницы на 120 секунд
+      '/**': { cache: { swr: true, maxAge: 30 } } // Кэшировать все страницы на ... секунд
     }
   }
 });

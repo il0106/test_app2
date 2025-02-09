@@ -1,7 +1,4 @@
 <template>
-<div>
-    <p>Обработка токена...</p>
-  </div>
 </template>
 
 <script setup>
@@ -11,20 +8,16 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 onMounted(() => {
+  // Проверяем наличие токена или необходимой информации после редиректа
   const hash = window.location.hash;
   const token = new URLSearchParams(hash.substring(1)).get('access_token');
 
   if (token) {
-    console.log('Токен получен:', token);
-    // Сохраните токен в хранилище (например, в Pinia или localStorage)
-    localStorage.setItem('yandex_token', token);
-    // Перенаправьте пользователя на главную страницу или другую страницу
-    router.push('/');
+    localStorage.setItem('yid_token', token);
+    window.close();
   } else {
-    console.error('Токен не найден');
-    // Обработка ошибки
+    console.log('Ошибка авторизации');
   }
 });
-// YaSendSuggestToken('http://localhost:3000/login')
 </script>
     

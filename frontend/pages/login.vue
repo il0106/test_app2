@@ -1,41 +1,3 @@
-<!-- <template>
-  <div>
-    <button @click="handleConnect">Авторизоваться с помощью Яндекс ID</button>
-  </div>
-</template>
-
-<script setup>
-function handleConnect() {
-  const authUrl = "https://oauth.yandex.ru/authorize?response_type=code&client_id=0c1ee06a816c4ed7b3a5ef93f8422190";
-  
-  // Открываем новое окно для авторизации
-  const newWindow = window.open(
-    authUrl,
-    'new_window',
-    'left=200,width=200,menubar=no'
-  );
-
-  // Если нужно, можно добавить обработчик для закрытия окна или получения данных
-  if (newWindow) {
-    newWindow.focus();
-  }
-}
-</script>
-
-<style scoped>
-/* Ваши стили здесь */
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-}
-</style> -->
-
-
-
-
 <template>
   <div>
     <button @click="handleAuth">Войти через Яндекс</button>
@@ -45,6 +7,10 @@ button {
 
 <script setup>
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 
 // Функция для инициализации авторизации
 const handleAuth = () => {
@@ -66,12 +32,26 @@ const handleAuth = () => {
     }
   )
   .then(({handler}) => handler())
-  .then(data => console.log('Сообщение с токеном', data))
+  .then(data => console.log('Сообщение с токеном', data))  
   .catch(error => console.log('Обработка ошибки', error));
 };
 
-// Инициализация при монтировании компонента
+let intervalId;
+
+const checkForToken = () => {
+  const token = localStorage.getItem('yid_token');
+  if (token) {
+    router.push('/workspace');
+  }
+};
+
 onMounted(() => {
-  // Здесь можно выполнить дополнительную инициализацию, если необходимо
+  checkForToken(); // Проверяем сразу при монтировании
+
+  intervalId = setInterval(checkForToken, 1000); // Проверяем каждую секунду
+});
+
+onUnmounted(() => {
+  clearInterval(intervalId); // Очищаем интервал при размонтировании
 });
 </script>

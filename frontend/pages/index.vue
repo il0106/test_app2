@@ -1,45 +1,27 @@
 <template>
     <div class="container">
+
       <header class="header">
-        <div class="logo">Логотип</div>
-        <div class="auth-button"><button @click="login">Войти</button></div>
-        <nav class="nav">
-          <button @click="scrollTo('about')">О нас</button>
-          <button @click="scrollTo('pricing')">Тарифы</button>
-          <button @click="scrollTo('contacts')">Контакты</button>
-        </nav>
+        <div class="logo">
+          <img src="~assets/public/img/logo-no-background.svg" alt="LOGO HERE" style="width: 25vw; height: auto;">
+       </div>
+        <div class="auth-buttons">
+          <button @click="login">Войти</button>
+          <button @click="register">Зарегистрироваться</button>
+        </div>
       </header>
-  
-      <section class="hero">
-        ![](https://chat.aiacademy.me/api/chats/gigachat_image/images[currentIndex])
-        </div>
-        <div class="carousel-controls">
-          <button @click="prevImage">«</button>
-          <button @click="nextImage">»</button>
-        </div>
-      </section>
-  
-      <section class="text-block" id="about">
-        <h2>Заголовок блока</h2>
-        <p>Ваш текст здесь.</p>
-      </section>
+
     </div>
   </template>
   
   <script>
   export default {
-    data() {
-      return {
-        images: [
-          'image1.jpg',
-          'image2.jpg',
-          'image3.jpg',
-        ],
-        currentIndex: 0,
-      };
-    },
+    
     methods: {
       login() {
+        // Логика для кнопки "Войти"
+      },
+      register() {
         // Логика для кнопки "Войти"
       },
       scrollTo(section) {
@@ -68,7 +50,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background: linear-gradient(to right, orange, blue);
+    background: linear-gradient(to right, rgb(231, 166, 14), rgb(76, 76, 82));
   }
   
   .auth-button button, .nav button {
@@ -80,52 +62,8 @@
     transition: transform 0.2s;
   }
   
-  .auth-button button:hover, .nav button:hover {
+  .auth-button button:hover{
     transform: scale(1.1);
   }
-  
-  .hero {
-    position: relative;
-  }
-  
-  .hero-image {
-    width: 100%;
-    height: 100vh;
-    object-fit: cover;
-  }
-  
-  .hero-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 48px;
-    text-align: center;
-  }
-  
-  .carousel {
-    padding: 20px;
-    background-color: #f0f0f0;
-    text-align: center;
-  }
-  
-  .carousel-container {
-    display: inline-block;
-  }
-  
-  .carousel-image {
-    width: 80%;
-    height: auto;
-  }
-  
-  .carousel-controls {
-    margin-top: 10px;
-  }
-  
-  .text-block {
-    padding: 20px;
-    background: linear-gradient(to bottom, orange, gray);
-    color: black;
-  }
+ 
   </style>

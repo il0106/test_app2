@@ -8,6 +8,7 @@ export default defineNuxtConfig({
       script: [
         {
           src: 'https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js',
+          async: true,
           defer: true,
         },
       ],

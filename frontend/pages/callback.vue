@@ -25,5 +25,6 @@ onMounted(() => {
     // Обработка ошибки
   }
 });
+// YaSendSuggestToken('http://localhost:3000/login')
 </script>
     

@@ -18,10 +18,9 @@ const handleAuth = () => {
     {
       client_id: "0c1ee06a816c4ed7b3a5ef93f8422190",
       response_type: "token",
-      // redirect_uri: "http://109.196.102.43:3000/callback"
       redirect_uri: "http://localhost:3000/callback"
     },
-    "http://109.196.102.43",//"http://localhost",
+    "http://localhost",
     {
       view: "button",
       parentId: "buttonContainerId",

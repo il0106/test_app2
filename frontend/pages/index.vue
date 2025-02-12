@@ -26,7 +26,7 @@ export default defineComponent({
 
     const register = () => {
       // Логика для регистрации, например, перенаправление на страницу регистрации
-      router.push('/register');
+      router.push('/sum');
     };
 
     return {

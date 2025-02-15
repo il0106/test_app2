@@ -1,5 +1,5 @@
 <template>
     <section>
-      <p>Милли самая лучшая</p>
+      <p> Это workspace после аутентификация </p>
     </section>
   </template>

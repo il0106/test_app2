@@ -19,9 +19,9 @@ const handleAuth = () => {
       client_id: "0c1ee06a816c4ed7b3a5ef93f8422190",
       response_type: "token",
       // redirect_uri: "http://localhost:3000/callback"
-      redirect_uri: "http://109.196.102.43:3000/callback"
+      redirect_uri: "https://oauth.yandex.ru/suggest/token"
     },
-    "http://109.196.102.43:3000",
+    "http://109.196.102.43",
     {
       view: "button",
       parentId: "buttonContainerId",

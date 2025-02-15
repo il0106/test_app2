@@ -20,8 +20,8 @@ services:
     build: 
       context: ./backend
     container_name: backend_container
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
     networks:
       - dev
 

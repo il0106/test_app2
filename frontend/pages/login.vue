@@ -42,6 +42,8 @@ const checkForToken = () => {
   const token = localStorage.getItem('yid_token');
   if (token) {
     router.push('/workspace');
+  } else {
+    console.log('нет токена yid_token - пользователь не перенаправлен на workspace');
   }
 };
 

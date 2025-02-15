@@ -14,7 +14,7 @@ onMounted(() => {
 
   if (token) {
     localStorage.setItem('yid_token', token);
-    window.close();
+    // window.close();
   } else {
     console.log('Ошибка авторизации');
   }

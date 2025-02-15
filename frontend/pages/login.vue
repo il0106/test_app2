@@ -21,7 +21,7 @@ const handleAuth = () => {
       // redirect_uri: "http://localhost:3000/callback"
       redirect_uri: "http://109.196.102.43:3000/callback"
     },
-    "http://109.196.102.43",
+    "http://109.196.102.43:3000",
     {
       view: "button",
       parentId: "buttonContainerId",

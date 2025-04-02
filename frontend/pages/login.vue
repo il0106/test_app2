@@ -33,9 +33,7 @@ const handleAuth = () => {
       buttonIcon: 'ya',
     }
   )
-  .then(({handler}) => handler())
-  .then(data => console.log('Сообщение с токеном', data))  
-  .catch(error => console.log('Обработка ошибки', error));
+  .then(({handler}) => handler());
 };
 
 let intervalId;
@@ -44,8 +42,6 @@ const checkForToken = () => {
   const token = localStorage.getItem('yid_token');
   if (token) {
     router.push('/workspace');
-  } else {
-    console.log('нет токена yid_token - пользователь не перенаправлен на workspace');
   }
 };
 

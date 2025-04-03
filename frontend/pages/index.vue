@@ -1,13 +1,24 @@
 <template>
   <div class="container">
     <header class="header">
+
       <div class="logo">
         <img src="~assets/public/img/logo-no-background.svg" alt="LOGO HERE" style="width: 25vw; height: auto;">
       </div>
+
+      <div class="about-button">
+        <button @click="to_aboutpage">О себе</button>
+      </div>
+
+      <div class="course-button">
+        <button @click="to_coursepage">Курс</button>
+      </div>
+
       <div class="auth-buttons">
         <button @click="login">Войти</button>
         <button @click="register">Зарегистрироваться</button>
       </div>
+
     </header>
   </div>
 </template>
@@ -29,9 +40,19 @@ export default defineComponent({
       router.push('/sum');
     };
 
+    const to_aboutpage = () => {
+      router.push('/about')
+    }
+
+    const to_coursepage = () => {
+      router.push('/course')
+    }
+
     return {
       login,
       register,
+      to_aboutpage,
+      to_coursepage
     };
   },
 });

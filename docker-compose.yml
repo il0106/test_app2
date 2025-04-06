@@ -19,7 +19,10 @@ services:
   backend:
     build: 
       context: ./backend
+    env_file: .env
     container_name: backend_container
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     # depends_on:
     #   - postgres
     networks:
@@ -35,7 +38,7 @@ services:
       - dev
 
   # postgres:
-  #   image: timescale/timescaledb:latest-pg16
+  #   image: postgres:16
   #   container_name: postgres_container
   #   restart: always
   #   environment:
@@ -57,7 +60,7 @@ services:
   #     start_period: 0s   # через сколько после запуска программы начать тест
   #   labels: # annotations не рекомендуются в compose, они более узкоспециализированыне и используются чаще при оркестрации, например в Kubernetes
   #     env: "test"
-  #     description: "timescaledb for test app"
+  #     description: "postgres for test app"
   #     version: "0.0.0"
   #   deploy:
   #     restart_policy:

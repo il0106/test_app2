@@ -11,13 +11,13 @@
       <!-- Блок основного контента справа -->
       <div class="main-content">
         <h1>Course: Mastering Nuxt</h1>
+
         <div class="lesson">
           <h3><strong>Lesson</strong></h3>
           <p>This is a lesson:</p>
-
           <NuxtPage />
-
         </div>
+        
       </div>
     </div>
   </template>

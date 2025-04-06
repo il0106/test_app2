@@ -3,6 +3,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   ssr: true,
+
+  devServer: {
+    port: 3000,
+  },
+
   app: {
     head: {
       script: [
@@ -14,22 +19,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  // auth: {
-  //   isEnabled: true,
-  //   disableServerSideAuth: false,
-  //   originEnvKey: 'AUTH_ORIGIN',
-  //   baseURL: 'http://localhost:3000/api/auth',
-  //   sessionRefresh: {
-  //     enablePeriodically: true,
-  //     enableOnWindowFocus: true,
-  //   },
-  //   provider: {
-  //     type: 'authjs',
-  //     trustHost: false,
-  //     defaultProvider: 'github',
-  //     addDefaultCallbackUrl: true
-  //   },
-  // },
+
   runtimeConfig: {
     public: {
       apiBaseUrl: 'http://localhost:8000'

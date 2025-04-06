@@ -11,34 +11,32 @@ db_user = 'user_'
 db_password = 'password_'
 
 # Попытка подключения
-# try:
-#     connection = psycopg2.connect(
-#         dbname=db_name,
-#         user=db_user,
-#         password=db_password,
-#         host=db_host,
-#         port=db_port, 
-#         options="-c client_encoding=UTF8"
-#     )
+try:
+    connection = psycopg2.connect(
+        dbname=db_name,
+        user=db_user,
+        password=db_password,
+        host=db_host,
+        port=db_port, 
+        options="-c client_encoding=UTF8"
+    )
 
-#     cursor = connection.cursor()
+    cursor = connection.cursor()
 
-#     # Выполнение SQL-запроса
-#     cursor.execute("SELECT version();")
-#     db_version = cursor.fetchone()
-#     print(f"Вы подключены к - {db_version}\n")
+    # Выполнение SQL-запроса
+    cursor.execute("SELECT version();")
+    db_version = cursor.fetchone()
+    print(f"Вы подключены к - {db_version}\n")
 
     
-#     q = """
-#     SELECT * FROM users;
-#     """
+    q = """
+    SELECT * FROM users;
+    """
 
-#     print(pd.read_sql_query(q, connection))
+    print(pd.read_sql_query(q, connection))
 
-#     cursor.close()
-#     connection.close()
+    cursor.close()
+    connection.close()
 
-# except Exception as error:
-#     print(f"Ошибка подключения к базе данных: {error}")
-
-print(b64encode(token_bytes(32)).decode())
+except Exception as error:
+    print(f"Ошибка подключения к базе данных: {error}")

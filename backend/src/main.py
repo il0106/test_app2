@@ -11,10 +11,7 @@ app = FastAPI()
 # Разрешаем CORS для фронтенда
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost",
-        "http://localhost:80",
-        "http://109.196.102.43"],  # В продакшене укажите конкретный домен фронтенда
+    allow_origins=settings.CORS.split(','),  # В продакшене укажите конкретный домен фронтенда
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,4 +29,4 @@ def read_config():
 
 
 if __name__=="__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=settings.BACKEND_PORT, reload=True) # здесь важно именно 0.0.0.0

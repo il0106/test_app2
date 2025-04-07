@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
 
     BACKEND_PORT: int
+    CORS: str
     
     POSTGRES_HOST: str
     POSTGRES_PORT: int

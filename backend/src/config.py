@@ -10,9 +10,9 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_USER: str
     POSTGRES_PASS: str
-
-    SECRET_KEY: str
-    ALGORITHM: str
+    
+    FRONTEND_PORT: int
+    BACKEND_API: str
 
     @property
     def POSTGRES_URL_asyncpg(self):

@@ -37,38 +37,38 @@ services:
     networks:
       - dev
 
-  # postgres:
-  #   image: postgres:16
-  #   container_name: postgres_container
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}      
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASS}
-  #     POSTGRES_DB: ${POSTGRES_DB} 
-  #     TZ: UTC
-  #     # PGDATA: '/var/lib/postgresql/data'  # вручную указывается папка, где хранятся данные кластера, но с этим проблема, т.к. при удалении тома в котором эта папка, она останется - будет засорение
-  #   # volumes:
-  #   #   - ./database/postgres/data:/var/lib/postgresql/data    # просто свою папку с данными кинули в том (слева может быть просто название тома)
-  #   #   - ./database/entrypoint:/docker-entrypoint-initdb.d    # в этой папке (томе) скрипта типа .sh .sql запускаются автоматически с контейнером  
-  #   ports:
-  #     - "${POSTGRES_PORT}:5432"  # слева - порт хоста, справа - порт докера
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]  # CMD предпочтительнее, потому что CMD-SHELL зависит от оболочки, но CMS-SHELL принимает переменные
-  #     interval: 10s
-  #     timeout: 10s  # максимальное время ожидания ответа
-  #     retries: 10      
-  #     start_period: 0s   # через сколько после запуска программы начать тест
-  #   labels: # annotations не рекомендуются в compose, они более узкоспециализированыне и используются чаще при оркестрации, например в Kubernetes
-  #     env: "test"
-  #     description: "postgres for test app"
-  #     version: "0.0.0"
-  #   deploy:
-  #     restart_policy:
-  #       condition: on-failure
-  #     resources:
-  #       limits:
-  #         cpus: '0.75'  # не более такого количества ядер
-  #         memory: 5GB
-  #   networks:
-  #     - dev
+  postgres:
+    image: postgres:16
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}      
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB} 
+      TZ: UTC
+      # PGDATA: '/var/lib/postgresql/data'  # вручную указывается папка, где хранятся данные кластера, но с этим проблема, т.к. при удалении тома в котором эта папка, она останется - будет засорение
+    # volumes:
+    #   - ./database/postgres/data:/var/lib/postgresql/data    # просто свою папку с данными кинули в том (слева может быть просто название тома)
+    #   - ./database/entrypoint:/docker-entrypoint-initdb.d    # в этой папке (томе) скрипта типа .sh .sql запускаются автоматически с контейнером  
+    ports:
+      - "${POSTGRES_PORT}:5432"  # слева - порт хоста, справа - порт докера
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]  # CMD предпочтительнее, потому что CMD-SHELL зависит от оболочки, но CMS-SHELL принимает переменные
+      interval: 10s
+      timeout: 10s  # максимальное время ожидания ответа
+      retries: 10      
+      start_period: 0s   # через сколько после запуска программы начать тест
+    labels: # annotations не рекомендуются в compose, они более узкоспециализированыне и используются чаще при оркестрации, например в Kubernetes
+      env: "test"
+      description: "postgres for test app"
+      version: "0.0.0"
+    deploy:
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.75'  # не более такого количества ядер
+          memory: 5GB
+    networks:
+      - dev
 

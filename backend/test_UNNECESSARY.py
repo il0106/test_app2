@@ -30,7 +30,9 @@ try:
 
     
     q = """
-    SELECT * FROM users;
+    SELECT table_name 
+    FROM information_schema.tables 
+    WHERE table_schema = 'public';
     """
 
     print(pd.read_sql_query(q, connection))

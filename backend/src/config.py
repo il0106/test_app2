@@ -4,6 +4,9 @@ class Settings(BaseSettings):
 
     BACKEND_PORT: int
     CORS: str
+    TOKEN_LIFETIME: int
+    RESET_TOKEN_SECRET: str
+    VERIFICATION_TOKEN_SECRET: str
     
     POSTGRES_HOST: str
     POSTGRES_PORT: int

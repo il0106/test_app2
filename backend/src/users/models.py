@@ -44,14 +44,11 @@ class User(Base, SQLAlchemyBaseUserTable[UserIdType]):
 
 class AccessToken(Base, SQLAlchemyBaseAccessTokenTable[UserIdType]):
 
-    __tablename__ = 'accesstoken'
+    __tablename__ = 'accesstokens'
 
-    user_id: Mapped[UserIdType] = mapped_column(
-        Integer, 
-        ForeignKey(column="users.id", ondelete='cascade'),
-        nullable=False
-    )
-    
+    user_id: Mapped[UserIdType] = mapped_column(Integer, 
+                                                ForeignKey(column="users.id", ondelete='cascade'),
+                                                nullable=False)
     @classmethod
     def get_db(cls, session: "AsyncSession"):
         return SQLAlchemyAccessTokenDatabase(session, cls)

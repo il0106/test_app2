@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn 
 from config import settings
-# from src.users.router import router as router_users
+from users.router import router as router_users
 
 
 app = FastAPI()
-# app.include_router(router_users)
+app.include_router(router_users)
 
 # Разрешаем CORS для фронтенда
 app.add_middleware(
@@ -25,6 +25,7 @@ def read_sum(a: float, b: float):
 @app.get("/settings")
 def read_config():
     return {str(settings)}
+
 
 
 

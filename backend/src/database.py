@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from src.config import settings
+from config import settings
 
 postgres_sync_engine = create_engine(
     url=settings.POSTGRES_URL_psycopg,

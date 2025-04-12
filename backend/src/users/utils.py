@@ -7,16 +7,15 @@ from fastapi_users_db_sqlalchemy.access_token import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.users.models import AccessToken
-from src.database import async_session_maker
-from src.users.models import User
+from users.models import AccessToken
+from database import async_session_maker
+from users.models import User
 
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
-
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield User.get_db(session=session)

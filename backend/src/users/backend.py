@@ -1,6 +1,6 @@
-from fastapi_users.authentication import AuthenticationBackend, BearerTransport, JWTStrategy
-from src.users.strategy import get_database_strategy
-from src.users.transport import cookie_transport
+from fastapi_users.authentication import AuthenticationBackend
+from users.strategy import get_database_strategy
+from users.transport import cookie_transport
 
 
 authentication_backend = AuthenticationBackend(

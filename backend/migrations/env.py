@@ -9,11 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from alembic import context
 
 import sys, os
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from src.config import settings
 from src.database import Base
-from src.users.models import User
+from src.users.models import User, AccessToken 
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

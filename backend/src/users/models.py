@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from database import Base
-from sqlalchemy import ForeignKey, Integer, String, func, Boolean
+from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from typing import TYPE_CHECKING
@@ -12,6 +9,7 @@ from fastapi_users_db_sqlalchemy.access_token import (
     SQLAlchemyBaseAccessTokenTable,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from config import settings
 from database import Base
 

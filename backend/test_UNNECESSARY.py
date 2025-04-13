@@ -37,8 +37,14 @@ try:
 
     print(pd.read_sql_query(q, connection))
 
+    # q = """
+    # DROP TABLE IF EXISTS alembic_version;
+    # """
+    # print(cursor.execute(q))
+
     cursor.close()
     connection.close()
 
 except Exception as error:
     print(f"Ошибка подключения к базе данных: {error}")
+

@@ -2,8 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, AsyncAttrs
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-import sys, os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# import sys, os
+# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from config import settings
 
 postgres_sync_engine = create_engine(

@@ -22,11 +22,11 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.BACKEND_API
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || process.env.BACKEND_API
     }
   },
   nitro: {
-    envDir: '../',
+    envDir: '.',
     devProxy: {
       '/api': {
         target: process.env.BACKEND_API,
@@ -41,7 +41,7 @@ export default defineNuxtConfig({
       }
     },
     routeRules: {
-      '/**': { cache: { swr: true, maxAge: 30 } } // Кэшировать все страницы на ... секунд
+      '/**': { cache: { swr: true, maxAge: 5 } } // Кэшировать все страницы на ... секунд
     }
   }
 });

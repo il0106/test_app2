@@ -1,0 +1,88 @@
+from typing import Optional
+from fastapi import Depends
+from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    JWTStrategy,
+)
+from fastapi_users.db import SQLAlchemyUserDatabase
+from fastapi_users.schemas import BaseUser, BaseUserCreate, BaseUserUpdate
+from fastapi_users.password import PasswordHelper
+from sqlalchemy.ext.asyncio import AsyncSession
+from database import get_async_session, Base
+from sqlalchemy import Column, String, Boolean
+from sqlalchemy.orm import Mapped, mapped_column
+import uuid
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String(length=1024), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+
+# Pydantic models for request/response
+class UserRead(BaseUser[str]):
+    pass
+
+class UserCreate(BaseUserCreate):
+    pass
+
+class UserUpdate(BaseUserUpdate):
+    pass
+
+class UserManager(UUIDIDMixin, BaseUserManager[User, str]):
+    reset_password_token_secret = "SECRET"
+    verification_token_secret = "SECRET"
+
+    async def on_after_register(self, user: User, request=None):
+        print(f"User {user.id} has registered.")
+
+    async def on_after_forgot_password(
+        self, user: User, token: str, request=None
+    ):
+        print(f"User {user.id} has forgot their password. Reset token: {token}")
+
+    async def on_after_request_verify(
+        self, user: User, token: str, request=None
+    ):
+        print(f"Verification requested for user {user.id}. Verification token: {token}")
+
+    async def authenticate(self, credentials):
+        """Override to use email instead of username"""
+        user = await self.user_db.get_by_email(credentials.username)
+        if user is None:
+            return None
+        password_helper = PasswordHelper()
+        if not password_helper.verify_and_update(credentials.password, user.hashed_password)[0]:
+            return None
+        return user
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLAlchemyUserDatabase(session, User)
+
+async def get_user_manager(user_db=Depends(get_user_db)):
+    yield UserManager(user_db)
+
+bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
+
+def get_jwt_strategy() -> JWTStrategy:
+    return JWTStrategy(secret="SECRET", lifetime_seconds=3600)
+
+auth_backend = AuthenticationBackend(
+    name="jwt",
+    transport=bearer_transport,
+    get_strategy=get_jwt_strategy,
+)
+
+fastapi_users = FastAPIUsers[User, str](
+    get_user_manager,
+    [auth_backend],
+)
+
+current_active_user = fastapi_users.current_user(active=True)
+current_superuser = fastapi_users.current_user(active=True, superuser=True) 

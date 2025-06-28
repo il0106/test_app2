@@ -1,4 +1,9 @@
+# Standard library imports
+import uuid
+from collections.abc import AsyncGenerator
 from typing import Optional
+
+# Third-party imports
 from fastapi import Depends
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
 from fastapi_users.authentication import (
@@ -7,13 +12,21 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
-from fastapi_users.schemas import BaseUser, BaseUserCreate, BaseUserUpdate
 from fastapi_users.password import PasswordHelper
-from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_async_session, Base
-from sqlalchemy import Column, String, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
-import uuid
+from fastapi_users.schemas import BaseUser, BaseUserCreate, BaseUserUpdate
+from sqlalchemy import Boolean, Column, String
+from sqlalchemy.ext.asyncio import (
+    AsyncAttrs,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+# Local imports
+from config import settings
+from database import Base, get_async_session
+
 
 class User(Base):
     __tablename__ = "users"
@@ -42,14 +55,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, str]):
     async def on_after_register(self, user: User, request=None):
         print(f"User {user.id} has registered.")
 
-    async def on_after_forgot_password(
-        self, user: User, token: str, request=None
-    ):
+    async def on_after_forgot_password(self, user: User, token: str, request=None):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
 
-    async def on_after_request_verify(
-        self, user: User, token: str, request=None
-    ):
+    async def on_after_request_verify(self, user: User, token: str, request=None):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
     async def authenticate(self, credentials):
@@ -62,11 +71,32 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, str]):
             return None
         return user
 
+
+engine = create_async_engine(
+    "sqlite+aiosqlite:///../data/sql_app.db",
+    echo=True,
+)
+
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+class Base(AsyncAttrs, DeclarativeBase):
+    pass
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
+        yield session
+
+# async def create_db_and_tables():
+#     async with engine.begin() as conn:
+#         await conn.run_sync(Base.metadata.create_all)
+
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)
+
+
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
@@ -83,6 +113,7 @@ fastapi_users = FastAPIUsers[User, str](
     get_user_manager,
     [auth_backend],
 )
+
 
 current_active_user = fastapi_users.current_user(active=True)
 current_superuser = fastapi_users.current_user(active=True, superuser=True) 

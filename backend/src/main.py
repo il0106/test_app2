@@ -5,8 +5,9 @@ from contextlib import asynccontextmanager
 import asyncio
 
 from config import settings
-from database import engine, Base
 from users import (
+    engine, 
+    Base,
     fastapi_users,
     User,
     UserCreate,
@@ -16,17 +17,17 @@ from users import (
     get_user_manager
 )
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup
-    async with engine.begin() as conn:
-        # Drop all tables first
-        await conn.run_sync(Base.metadata.drop_all)
-        # Create all tables
-        await conn.run_sync(Base.metadata.create_all)
-    yield
-    # Shutdown
-    await engine.dispose()
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     # Startup
+#     async with engine.begin() as conn:
+#         # Drop all tables first
+#         await conn.run_sync(Base.metadata.drop_all)
+#         # Create all tables
+#         await conn.run_sync(Base.metadata.create_all)
+#     yield
+#     # Shutdown
+#     await engine.dispose()
 
 app = FastAPI(lifespan=lifespan)
 

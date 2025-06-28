@@ -1,11 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   ssr: true,
 
   devServer: {
-    port: process.env.FRONTEND_PORT,
+    port: parseInt(process.env.FRONTEND_PORT || '3000'),
   },
 
   app: {
@@ -22,14 +22,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || process.env.BACKEND_API
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || process.env.BACKEND_API || 'http://localhost:8000'
     }
   },
   nitro: {
-    envDir: '.',
     devProxy: {
       '/api': {
-        target: process.env.BACKEND_API,
+        target: process.env.BACKEND_API || 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       },

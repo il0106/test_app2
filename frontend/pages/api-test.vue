@@ -90,11 +90,7 @@ const loginUser = async () => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({
-        username: loginForm.value.username,
-        password: loginForm.value.password,
-        grant_type: "password"
-      })
+      body: new URLSearchParams(loginForm.value)
     })
     loginResponse.value = await response.json()
     if (loginResponse.value.access_token) {

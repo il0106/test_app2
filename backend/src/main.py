@@ -29,7 +29,8 @@ from users import (
 #     # Shutdown
 #     await engine.dispose()
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(#lifespan=lifespan
+    )
 
 # Include user management routes
 app.include_router(

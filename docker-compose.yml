@@ -5,6 +5,7 @@ networks:
 
 services:
   nginx:
+    container_name: nginx_container
     image: nginx:1.28.0
     depends_on:
       - backend

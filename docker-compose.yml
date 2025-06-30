@@ -26,7 +26,7 @@ services:
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     volumes:
-      - ./backend/data:/app/data
+      - ./backend/volume:/app/volume
     networks:
       - dev
 

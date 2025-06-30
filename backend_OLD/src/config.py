@@ -7,10 +7,11 @@ class Settings(BaseSettings):
     TOKEN_LIFETIME: int
     RESET_TOKEN_SECRET: str
     VERIFICATION_TOKEN_SECRET: str
+    JWT_SECRET: str
     
     FRONTEND_PORT: int
     BACKEND_API: str
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file="../.env")
 
 settings = Settings()

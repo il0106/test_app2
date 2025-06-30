@@ -51,8 +51,8 @@ class UserUpdate(BaseUserUpdate):
     pass
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, str]):
-    reset_password_token_secret = "SECRET"
-    verification_token_secret = "SECRET"
+    reset_password_token_secret = settings.RESET_TOKEN_SECRET
+    verification_token_secret = settings.VERIFICATION_TOKEN_SECRET
 
     async def on_after_register(self, user: User, request=None):
         print(f"User {user.id} has registered.")
@@ -62,16 +62,6 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, str]):
 
     async def on_after_request_verify(self, user: User, token: str, request=None):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
-
-    async def authenticate(self, credentials):
-        """Override to use email instead of username"""
-        user = await self.user_db.get_by_email(credentials.username)
-        if user is None:
-            return None
-        password_helper = PasswordHelper()
-        if not password_helper.verify_and_update(credentials.password, user.hashed_password)[0]:
-            return None
-        return user
 
 
 engine = create_async_engine(
@@ -93,15 +83,16 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
 
-async def get_user_manager(user_db=Depends(get_user_db)):
+async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
+
 
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret="SECRET", lifetime_seconds=3600)
+    return JWTStrategy(secret=settings.JWT_SECRET, lifetime_seconds=settings.TOKEN_LIFETIME)
 
 auth_backend = AuthenticationBackend(
     name="jwt",

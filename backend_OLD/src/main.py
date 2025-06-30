@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn 
 from contextlib import asynccontextmanager
@@ -14,7 +14,8 @@ from users import (
     UserRead,
     UserUpdate,
     auth_backend,
-    get_user_manager
+    get_user_manager,
+    current_active_user
 )
 
 # @asynccontextmanager
@@ -32,14 +33,21 @@ from users import (
 app = FastAPI(#lifespan=lifespan
     )
 
-# Include user management routes
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth/jwt",
-    tags=["auth"],
+    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
 )
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_reset_password_router(),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_verify_router(UserRead),
     prefix="/auth",
     tags=["auth"],
 )
@@ -48,6 +56,11 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
+
+
+@app.get("/authenticated-route")
+async def authenticated_route(user: User = Depends(current_active_user)):
+    return {"message": f"Hello {user.email}!"}
 
 # Разрешаем CORS для фронтенда
 app.add_middleware(
@@ -70,4 +83,4 @@ def read_config():
     return {str(settings)}
 
 if __name__=="__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=settings.BACKEND_PORT, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=settings.BACKEND_PORT)

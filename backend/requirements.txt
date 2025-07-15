@@ -5,3 +5,4 @@ pydantic-settings==2.0.0
 setuptools==69.0.0
 passlib[bcrypt]==1.7.4
 fastapi-cors==0.0.6
+emails==0.6.0

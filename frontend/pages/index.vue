@@ -35,24 +35,8 @@ export default defineComponent({
       router.push('/login');
     };
 
-    const register = () => {
-      // Логика для регистрации, например, перенаправление на страницу регистрации
-      router.push('/sum');
-    };
-
-    const to_aboutpage = () => {
-      router.push('/about')
-    }
-
-    const to_coursepage = () => {
-      router.push('/course')
-    }
-
     return {
-      login,
-      register,
-      to_aboutpage,
-      to_coursepage
+      login
     };
   },
 });

@@ -26,7 +26,6 @@ export default defineNuxtConfig({
     }
   },
   nitro: {
-    envDir: '../',
     devProxy: {
       '/api': {
         target: process.env.BACKEND_API || 'http://localhost:8000',
@@ -34,14 +33,14 @@ export default defineNuxtConfig({
         secure: false,
       },
     },
-    storage: {
-      'cache': {
-        driver: 'fs',
-        base: './.cache'
-      }
-    },
-    routeRules: {
-      '/**': { cache: { swr: true, maxAge: 5 } } // Кэшировать все страницы на ... секунд
-    }
+    // storage: {
+    //   'cache': {
+    //     driver: 'fs',
+    //     base: './.cache'
+    //   }
+    // },
+    // routeRules: {
+    //   '/**': { cache: { swr: true, maxAge: 5 } } // Кэшировать все страницы на ... секунд
+    // }
   }
 });

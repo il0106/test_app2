@@ -5,13 +5,23 @@ from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Boolean, DateTime
+from datetime import datetime
 
-DATABASE_URL = "sqlite+aiosqlite:///./volume/test.db"
+from config import settings
+
+# Используем переменные окружения для DATABASE_URL
+DATABASE_URL = settings["DATABASE_URL"]
 Base: DeclarativeMeta = declarative_base()
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    pass
+    # Добавляем поле для верификации email
+    is_verified = Column(Boolean, default=False, nullable=False)
+    # Поле для отслеживания времени верификации
+    verified_at = Column(DateTime, nullable=True)
+    # Поле для отслеживания времени создания
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
 
 engine = create_async_engine(DATABASE_URL)

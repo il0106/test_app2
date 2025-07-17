@@ -15,7 +15,6 @@ from src.db import User, get_user_db
 from src.email_service import email_service
 
 from config import settings
-print(settings)
 
 SECRET = settings['JWT_SECRET']
 

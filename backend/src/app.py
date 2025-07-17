@@ -8,7 +8,16 @@ from src.users import auth_backend, current_active_user, fastapi_users, get_user
 from src.email_service import email_service
 from config import settings
 
-app = FastAPI()
+
+async def lifespan(app: FastAPI):
+    # Startup
+    await create_db_and_tables()
+    yield
+    # Shutdown
+    pass
+
+
+app = FastAPI(lifespan=lifespan)
 
 # Configure CORS
 app.add_middleware(
@@ -105,9 +114,3 @@ async def get_verification_status(user: User = Depends(current_active_user)):
         "verified_at": user.verified_at,
         "created_at": user.created_at
     }
-
-
-# @app.on_event("startup")
-# async def on_startup():
-#     # Not needed if you setup a migration system like Alembic
-#     await create_db_and_tables()

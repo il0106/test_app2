@@ -10,7 +10,7 @@ from datetime import datetime
 
 from config import settings
 
-# Используем переменные окружения для DATABASE_URL
+
 DATABASE_URL = settings["DATABASE_URL"]
 Base: DeclarativeMeta = declarative_base()
 

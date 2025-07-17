@@ -8,12 +8,10 @@ from config import settings
 
 class EmailService:
     def __init__(self):
-        # Настройки SMTP из переменных окружения
-        self.smtp_server = settings.get("SMTP_SERVER", "smtp.yandex.ru")
-        self.smtp_port = int(settings.get("SMTP_PORT", "465"))  # SSL
-        self.smtp_login = settings.get("SMTP_LOGIN", "")
-        # Получаем пароль из переменных среды для безопасности
-        self.smtp_password = settings.get("SMTP_PASSWORD", "rqnbvmpzqeovqjtu")
+        self.smtp_server = settings["SMTP_SERVER"]
+        self.smtp_port = int(settings["SMTP_PORT"])
+        self.smtp_login = settings["SMTP_LOGIN"]
+        self.smtp_password = settings["SMTP_PASSWORD"]
         
     async def send_verification_email(self, user_email: str, verification_token: str, base_url: str = "http://localhost:3000") -> bool:
         """

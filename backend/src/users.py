@@ -11,17 +11,18 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from app.db import User, get_user_db
-from app.email_service import email_service
+from src.db import User, get_user_db
+from src.email_service import email_service
 
 from config import settings
+print(settings)
 
-SECRET = settings.JWT_SECRET
+SECRET = settings['JWT_SECRET']
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
-    reset_password_token_secret = settings.RESET_PASSWORD_TOKEN_SECRET
-    verification_token_secret = settings.VERIFICATION_TOKEN_SECRET
+    reset_password_token_secret = settings['RESET_PASSWORD_TOKEN_SECRET']
+    verification_token_secret = settings['VERIFICATION_TOKEN_SECRET']
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")

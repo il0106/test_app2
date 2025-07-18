@@ -44,11 +44,7 @@ async def create_db_and_tables():
                 logger.info("База данных существует, проверяем наличие таблиц...")
                 
                 # Проверяем, есть ли таблицы в базе данных
-                result = await conn.execute(text("""
-                    SELECT COUNT(*) 
-                    FROM information_schema.tables 
-                    WHERE table_schema = 'public'
-                """))
+                result = await conn.execute(text("""SELECT COUNT(*) FROM sqlite_master WHERE type='table'""")) # Там должна быть user
                 table_count = result.scalar()
                 
                 if table_count == 0:

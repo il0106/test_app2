@@ -10,6 +10,7 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
+from fastapi_users.jwt import generate_jwt, decode_jwt
 
 from src.db import User, get_user_db
 from src.email_service import email_service
@@ -50,20 +51,22 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
     async def send_verification_email(self, user: User, base_url: str):
         """Отправляет email для верификации пользователя"""
-        token = self.verification_token_manager.create_token(user)
+        # Создаем токен верификации используя правильный метод
+        token_data = {"sub": str(user.id), "email": user.email, "aud": "fastapi-users:verify"}
+        token = generate_jwt(token_data, self.verification_token_secret, 3600)  # 1 hour
         await email_service.send_verification_email(user.email, token, base_url)
 
     async def verify_user(self, token: str) -> Optional[User]:
         """Верифицирует пользователя по токену"""
         try:
-            user_id = self.verification_token_manager.verify_token(token)
-            if user_id:
-                user = await self.get(user_id)
-                if user and not user.is_verified:
-                    user.is_verified = True
-                    user.verified_at = datetime.utcnow()
-                    await self.user_db.update(user)
-                    return user
+            token_data = decode_jwt(token, self.verification_token_secret, ["fastapi-users:verify"])
+            user_id = uuid.UUID(token_data["sub"])
+            user = await self.get(user_id)
+            if user and not user.is_verified:
+                user.is_verified = True
+                user.verified_at = datetime.utcnow()
+                await self.user_db.update(user)
+                return user
         except Exception as e:
             print(f"Error verifying user: {e}")
         return None

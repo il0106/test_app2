@@ -22,11 +22,8 @@ logger = logging.getLogger(__name__)
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    # Добавляем поле для верификации email
     is_verified = Column(Boolean, default=False, nullable=False)
-    # Поле для отслеживания времени верификации
     verified_at = Column(DateTime, nullable=True)
-    # Поле для отслеживания времени создания
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
 
@@ -68,7 +65,7 @@ async def create_db_and_tables():
                 # Если база данных не существует, создаем её
                 # Для этого нужно подключиться к postgres (системной БД)
                 db_name = DATABASE_URL.split('/')[-1]
-                db_url_without_db = '/'.join(DATABASE_URL.split('/')[:-1]) + '/postgres'
+                db_url_without_db = '/'.join(DATABASE_URL.split('/')[:-1]) + '/test.db'
                 
                 temp_engine = create_async_engine(db_url_without_db)
                 async with temp_engine.begin() as temp_conn:

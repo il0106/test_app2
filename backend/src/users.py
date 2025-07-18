@@ -59,7 +59,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     async def verify_user(self, token: str) -> Optional[User]:
         """Верифицирует пользователя по токену"""
         try:
-            token_data = decode_jwt(token, self.verification_token_secret, ["fastapi-users:verify"])
+            token_data = decode_jwt(token, 
+                                    self.verification_token_secret, 
+                                    ["fastapi-users:verify"])
             user_id = uuid.UUID(token_data["sub"])
             user = await self.get(user_id)
             if user and not user.is_verified:

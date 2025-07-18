@@ -63,7 +63,7 @@ async def verify_email(token: str, request: Request):
     """
     Верифицирует email пользователя по токену
     """
-    user_manager = next(get_user_manager())
+    user_manager = anext(get_user_manager())
     user = await user_manager.verify_user(token)
     
     if user:
@@ -77,7 +77,7 @@ async def resend_verification(request: ResendVerificationRequest, req: Request):
     """
     Повторно отправляет email для верификации
     """
-    user_manager = next(get_user_manager())
+    user_manager = anext(get_user_manager())
     
     try:
         # Находим пользователя по email

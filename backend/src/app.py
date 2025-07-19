@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 
 from src.db import User, create_db_and_tables
 from src.schemas import UserCreate, UserRead, UserUpdate, VerificationResponse, ResendVerificationRequest
-from src.users import auth_backend, current_active_user, fastapi_users, get_user_manager
+from src.users import auth_backend, current_active_user, fastapi_users, get_user_manager, UserManager
 from src.email_service import email_service
 from config import settings
 
@@ -59,26 +59,23 @@ async def authenticated_route(user: User = Depends(current_active_user)):
 
 
 @app.get("/verify-email/{token}")
-async def verify_email(token: str, request: Request):
+async def verify_email(token: str, request: Request, user_manager: UserManager = Depends(get_user_manager)):
     """
     Верифицирует email пользователя по токену
     """
-    user_manager = anext(get_user_manager())
     user = await user_manager.verify_user(token)
     
     if user:
-        return True
+        return {"success": True, "message": "Email успешно верифицирован"}
     else:
-        return False
+        raise HTTPException(status_code=400, detail="Недействительный токен верификации")
 
 
 @app.post("/resend-verification", response_model=VerificationResponse)
-async def resend_verification(request: ResendVerificationRequest, req: Request):
+async def resend_verification(request: ResendVerificationRequest, req: Request, user_manager: UserManager = Depends(get_user_manager)):
     """
     Повторно отправляет email для верификации
     """
-    user_manager = anext(get_user_manager())
-    
     try:
         # Находим пользователя по email
         user = await user_manager.get_by_email(request.email)

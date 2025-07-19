@@ -1,6 +1,6 @@
 import uuid
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
@@ -66,7 +66,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
             user = await self.get(user_id)
             if user and not user.is_verified:
                 user.is_verified = True
-                user.verified_at = datetime.utcnow()
+                user.verified_at = datetime.now(timezone.utc)
                 await self.user_db.update(user)
                 return user
         except Exception as e:
@@ -75,7 +75,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
 
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
-    yield UserManager(user_db)
+    return UserManager(user_db)
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")

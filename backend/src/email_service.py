@@ -1,10 +1,8 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Optional
-import os
-
 from config import settings
+
 
 class EmailService:
     def __init__(self):
@@ -25,7 +23,7 @@ class EmailService:
             msg["Subject"] = "Подтверждение регистрации"
             
             # Создаем ссылку для верификации
-            verification_url = f"{base_url}/verify?token={verification_token}"
+            verification_url = f"{base_url}/verify-email?token={verification_token}"
             
             # HTML тело письма
             html_body = f"""

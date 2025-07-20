@@ -11,7 +11,9 @@ class EmailService:
         self.smtp_login = settings["SMTP_LOGIN"]
         self.smtp_password = settings["SMTP_PASSWORD"]
         
-    async def send_verification_email(self, user_email: str, verification_token: str, base_url: str = "http://localhost:3000") -> bool:
+    async def send_verification_email(self, user_email: str, 
+                                      verification_token: str, 
+                                      base_url: str = "http://localhost:3000") -> bool:
         """
         Отправляет email с ссылкой для верификации
         """

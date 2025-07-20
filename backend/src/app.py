@@ -1,12 +1,16 @@
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+import logging
 
 from src.db import User, create_db_and_tables
 from src.schemas import UserCreate, UserRead, UserUpdate, VerificationResponse, ResendVerificationRequest
 from src.users import auth_backend, current_active_user, fastapi_users, get_user_manager, UserManager
 from src.email_service import email_service
 from config import settings
+
+# Настройка логирования
+logger = logging.getLogger(__name__)
 
 
 async def lifespan(app: FastAPI):
@@ -63,12 +67,27 @@ async def verify_email(token: str, request: Request, user_manager: UserManager =
     """
     Верифицирует email пользователя по токену
     """
-    user = await user_manager.verify_user(token)
-    
-    if user:
-        return {"success": True, "message": "Email успешно верифицирован"}
-    else:
-        raise HTTPException(status_code=400, detail="Недействительный токен верификации")
+    try:
+        logger.info(f"Verification request received for token: {token[:20]}...")
+        
+        if not token:
+            logger.error("Empty token provided")
+            raise HTTPException(status_code=400, detail="Токен верификации не предоставлен")
+        
+        user = await user_manager.verify_user(token)
+        
+        if user:
+            logger.info(f"User {user.id} successfully verified")
+            return {"success": True, "message": "Email успешно верифицирован"}
+        else:
+            logger.error("Verification failed - invalid token or user not found")
+            raise HTTPException(status_code=400, detail="Недействительный токен верификации")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error during verification: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Внутренняя ошибка сервера при верификации")
 
 
 @app.post("/resend-verification", response_model=VerificationResponse)

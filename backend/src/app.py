@@ -1,6 +1,5 @@
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
 import logging
 
 from src.db import User, create_db_and_tables
@@ -62,32 +61,7 @@ async def authenticated_route(user: User = Depends(current_active_user)):
     return {"message": f"Hello {user.email}!"}
 
 
-@app.get("/verify-email/{token}")
-async def verify_email(token: str, request: Request, user_manager: UserManager = Depends(get_user_manager)):
-    """
-    Верифицирует email пользователя по токену
-    """
-    try:
-        logger.info(f"Verification request received for token: {token[:20]}...")
-        
-        if not token:
-            logger.error("Empty token provided")
-            raise HTTPException(status_code=400, detail="Токен верификации не предоставлен")
-        
-        user = await user_manager.verify_user(token)
-        
-        if user:
-            logger.info(f"User {user.id} successfully verified")
-            return {"success": True, "message": "Email успешно верифицирован"}
-        else:
-            logger.error("Verification failed - invalid token or user not found")
-            raise HTTPException(status_code=400, detail="Недействительный токен верификации")
-            
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Unexpected error during verification: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Внутренняя ошибка сервера при верификации")
+
 
 
 @app.post("/resend-verification", response_model=VerificationResponse)
@@ -118,15 +92,3 @@ async def resend_verification(request: ResendVerificationRequest, req: Request, 
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка отправки email: {str(e)}")
-
-
-@app.get("/user/verification-status")
-async def get_verification_status(user: User = Depends(current_active_user)):
-    """
-    Возвращает статус верификации текущего пользователя
-    """
-    return {
-        "is_verified": user.is_verified,
-        "verified_at": user.verified_at,
-        "created_at": user.created_at
-    }

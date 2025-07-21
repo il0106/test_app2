@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   ssr: true,
 
   devServer: {
-    port: parseInt(process.env.FRONTEND_PORT || '3000'),
+    port: parseInt(process.env.FRONTEND_PORT),
   },
 
   app: {
@@ -22,13 +22,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || process.env.BACKEND_API || 'http://localhost:8000'
+      apiBase: process.env.BACKEND_API
     }
   },
   nitro: {
     devProxy: {
       '/api': {
-        target: process.env.BACKEND_API || 'http://localhost:8000',
+        target: process.env.BACKEND_API,
         changeOrigin: true,
         secure: false,
       },

@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-# Configure CORS
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings["ALLOWED_ORIGINS"].split(","), 
@@ -59,9 +59,6 @@ app.include_router(
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):
     return {"message": f"Hello {user.email}!"}
-
-
-
 
 
 @app.post("/resend-verification", response_model=VerificationResponse)

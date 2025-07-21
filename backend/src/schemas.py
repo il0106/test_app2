@@ -10,6 +10,7 @@ class UserRead(schemas.BaseUser[uuid.UUID]):
     is_verified: bool
     verified_at: Optional[datetime] = None
     created_at: datetime
+    is_customer: bool
 
 
 class UserCreate(schemas.BaseUserCreate):

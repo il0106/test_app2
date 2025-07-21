@@ -8,7 +8,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Boolean, DateTime, text
 from sqlalchemy.exc import OperationalError, ProgrammingError
-from datetime import datetime
+from datetime import datetime, timezone
 
 from config import settings
 
@@ -24,7 +24,8 @@ logger = logging.getLogger(__name__)
 class User(SQLAlchemyBaseUserTableUUID, Base):
     is_verified = Column(Boolean, default=False, nullable=False)
     verified_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc), nullable=False)
+    is_customer = Column(Boolean, default=False, nullable=False)
 
 
 engine = create_async_engine(DATABASE_URL)

@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     }
   },
   nitro: {
-    // envDir: '../',
+    envDir: '../',
     devProxy: {
       '/api': {
         target: process.env.BACKEND_API,

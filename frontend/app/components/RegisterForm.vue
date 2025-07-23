@@ -61,8 +61,9 @@
     
     try {
       console.log('Registering user:', email.value)
+      console.log(config.public.apiBase)
       
-      const response = await $fetch('/auth/register', {
+      const response = await useFetch(`/auth/register`, {
         method: 'POST',
         body: {
           email: email.value,

@@ -1,3 +1,10 @@
+import { config as dotenvConfig } from 'dotenv'
+import { resolve } from 'path'
+
+// Явно указываем путь до нужного .env-файла
+dotenvConfig({ path: resolve(__dirname, '../.env') })
+
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -26,7 +33,7 @@ export default defineNuxtConfig({
     }
   },
   nitro: {
-    envDir: '../',
+    envDir: './',
     devProxy: {
       '/api': {
         target: process.env.BACKEND_API,

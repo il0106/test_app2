@@ -19,3 +19,4 @@ def delete_all_users():
 # Вызов функции для удаления всех пользователей
 delete_all_users()
 
+print(pd.read_sql_query("select * FROM user",conn))

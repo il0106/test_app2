@@ -31,10 +31,11 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         logger.info(f"User {user.id} has registered.")
+        
         # Отправляем email для верификации при регистрации
-        if request:
-            base_url = str(request.base_url).rstrip('/')
-            await self.send_verification_email(user, base_url)
+        # if request:
+        #     base_url = str(request.base_url).rstrip('/')
+        #     await self.send_verification_email(user, base_url)
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None

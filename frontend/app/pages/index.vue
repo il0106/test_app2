@@ -7,8 +7,11 @@
       </div>
       
       <div class="auth-buttons">
-        <button @click="goToLogin" class="auth-btn login-btn">Войти</button>
-        <button @click="goToRegister" class="auth-btn register-btn">Регистрация</button>
+        <button v-if="!isAuthenticated" @click="goToLogin" class="auth-btn login-btn">Войти</button>
+        <button v-if="!isAuthenticated" @click="goToRegister" class="auth-btn register-btn">Регистрация</button>
+        <button v-if="isAuthenticated" @click="goToProfile" class="auth-btn profile-btn">Профиль</button>
+        <button v-if="isAuthenticated" @click="goToTest" class="auth-btn test-btn">Тест</button>
+        <button v-if="isAuthenticated" @click="logout" class="auth-btn logout-btn">Выйти</button>
       </div>
     </header>
 
@@ -80,7 +83,10 @@
 </template>
 
 <script setup>
+import { useAuth } from '~/composables/useAuth'
+
 const router = useRouter();
+const { isAuthenticated, clearUser } = useAuth();
 
 const goToLogin = () => {
   router.push('/login');
@@ -88,6 +94,19 @@ const goToLogin = () => {
 
 const goToRegister = () => {
   router.push('/register');
+};
+
+const goToProfile = () => {
+  router.push('/profile');
+};
+
+const goToTest = () => {
+  router.push('/test-auth');
+};
+
+const logout = () => {
+  clearUser();
+  router.push('/');
 };
 </script>
 
@@ -153,6 +172,33 @@ const goToRegister = () => {
 
 .register-btn:hover {
   background: #0056b3;
+}
+
+.profile-btn {
+  background: #28a745;
+  color: white;
+}
+
+.profile-btn:hover {
+  background: #218838;
+}
+
+.logout-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+.test-btn {
+  background: #6f42c1;
+  color: white;
+}
+
+.test-btn:hover {
+  background: #5a32a3;
 }
 
 /* Main Content */

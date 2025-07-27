@@ -1,4 +1,23 @@
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
+  // Инициализируем авторизацию при загрузке приложения
+  nuxtApp.hook('app:created', async () => {
+    const { refreshUserData } = useAuth()
+    
+    // Проверяем, есть ли токен в localStorage
+    if (process.client) {
+      const token = localStorage.getItem('token')
+      if (token) {
+        console.log('Plugin: Found token in localStorage, loading user data...')
+        try {
+          await refreshUserData()
+          console.log('Plugin: User data loaded successfully')
+        } catch (error) {
+          console.error('Plugin: Error loading user data:', error)
+        }
+      }
+    }
+  })
+
   // Добавляем токен к запросам автоматически
   nuxtApp.hook('app:created', () => {
     // Перехватываем все fetch запросы
